@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <style>
+    #container {
+      width: 300px;
+      height: 300px;
+      position: relative;
+    }
+
+    #up {
+      position: absolute;
+      top: 0px;
+      left: 60px;
+      font-size: 15px;
+    }
+
+    #down {
+      position: absolute;
+      top: 80px;
+      left: 55px;
+    }
+
+    #right {
+      position: absolute;
+      top: 40px;
+      left: 120px;
+      font-size: 12px;
+    }
+
+    #left {
+      position: absolute;
+      top: 40px;
+      left: 0px;
+    }
+
+    #str {
+      position: absolute;
+      top: 100px;
+    }
+
+    #image {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      left: 350px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="container">
+    <button id="up" onclick="moveImage('up')">up</button>
+    <button id="down" onclick="moveImage('down')">down</button>
+    <button id="right" onclick="moveImage('right')">right</button>
+    <button id="left" onclick="moveImage('left')">left</button>
+    <img id="image" src="https://www.wilson.com/it-it/media/catalog/product/article_images/WTB6101XB_/WTB6101XB__484829dfaaa0e517f6d56cdade0aaee7.png">
+    <p id="str"></p>
+    <p id="move"></p>
+  </div>
+  <script>
+    const movingImage = document.getElementById('image');
+
+    function moveImage(direction) {
+      const step = 10; // Adjust the step size as needed
+      let currentLeft = parseInt(getComputedStyle(movingImage).left) || 0;
+      let currentTop = parseInt(getComputedStyle(movingImage).top) || 0;
+      
+
+      switch (direction) {
+        case 'up':
+          movingImage.style.top = `${currentTop - step}px`;
+          scritta("up")
+          break;
+        case 'down':
+          movingImage.style.top = `${currentTop + step}px`;
+          scritta("down")
+          break;
+        case 'left':
+          movingImage.style.left = `${currentLeft - step}px`;
+          scritta("left")
+          break;
+        case 'right':
+          movingImage.style.left = `${currentLeft + step}px`;
+          scritta("right")
+          break;
+        default:
+          break;
+          
+      }
+     
+    }
+    function scritta(Topolino) {
+      document.getElementById("str").innerHTML = Topolino;
+    }
+    function down() {
+      moveImage('down');
+      document.getElementById("move").innerHTML = "down";
+    }
+
+    function left() {
+      moveImage('left');
+      document.getElementById("move").innerHTML = "left";
+    }
+
+    function right() {
+      moveImage('right');
+      document.getElementById("move").innerHTML = "right";
+    }
+
+    function up() {
+      moveImage('up');
+      document.getElementById("move").innerHTML = "up";
+    }
+    function startTimer() {
+        timerInterval = setInterval(function () {
+            seconds++;
+            timerElement.textContent = `${seconds} sec`;
+
+            if (seconds === 60) {
+                clearInterval(timerInterval);
+                alert('Il tempo è scaduto!');
+            }
+        }, 1000);
+    }
+    startTimer();
+  </script>
+</body>
+
+</html>
