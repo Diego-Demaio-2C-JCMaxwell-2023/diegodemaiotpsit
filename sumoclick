@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Due Bottoni</title>
+    <style>
+        body {
+            display: grid;
+            place-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: green; /* Aggiunto colore di sfondo verde */
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            transition: transform 0.5s ease; /* Aggiunge una transizione di 0.5 secondi per un effetto più fluido */
+        }
+
+        button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<button id="startButton" onclick="avviaGioco()">Start</button>
+<button id="button1" onclick="spostaImmagine('down')">Player 1</button>
+<img id="sumoImage" src="sumo.png" alt="sumo">
+<button id="button2" onclick="spostaImmagine('up')">Player 2</button>
+
+<script>
+    let yOffset = 0;
+    let giocoAttivo = false;
+
+    function avviaGioco() {
+        giocoAttivo = true;
+        document.getElementById('startButton').disabled = true; // Disabilita il pulsante Start dopo il clic
+        setTimeout(function () {
+            fineGioco();
+        }, 60000); // 60 secondi
+    }
+
+    function spostaImmagine(direction) {
+        if (!giocoAttivo) return;
+
+        var immagine = document.getElementById('sumoImage');
+
+        if (direction === 'down') {
+            yOffset += 20; // Incrementa la posizione verso il basso di 20 pixel ad ogni clic
+        } else if (direction === 'up') {
+            yOffset -= 20; // Decrementa la posizione verso l'alto di 20 pixel ad ogni clic
+        }
+
+        immagine.style.transform = `translateY(${yOffset}px)`;
+    }
+
+    function fineGioco() {
+        giocoAttivo = false;
+        alert("Il gioco è finito!");
+    }
+</script>
+
+</body>
+</html>
