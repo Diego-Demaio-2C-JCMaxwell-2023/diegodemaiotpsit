@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generatore di Frasi Casuali</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="mb-4">Generatore di Frasi Casuali</h1>
+    <div id="frase" class="mb-3"></div>
+    <button id="generaFrase" class="btn btn-primary">Genera Frase Casuale</button>
+  </div>
+
+  <script>
+    const soggetti = [
+      "Il gatto",
+      "Il cane",
+      "La volpe",
+      "Il leone",
+      "Il pescatore",
+      "Il musicista",
+      "La ballerina",
+      "Il cuoco",
+      "Il professore",
+      "La scienziata"
+    ];
+
+    const verbi = [
+      "corre",
+      "salta",
+      "dorme",
+      "canta",
+      "nuota",
+      "mangia",
+      "studia",
+      "scrive",
+      "guida",
+      "adora"
+    ];
+
+    const complementiOggetto = [
+      "il topo",
+      "il libro",
+      "il mare",
+      "la montagna",
+      "la pizza",
+      "la canzone",
+      "il computer",
+      "il quadro",
+      "il gioco",
+      "la poesia"
+    ];
+
+    const aggettivi = [
+      "bello",
+      "grande",
+      "piccolo",
+      "intelligente",
+      "veloce",
+      "simpatico",
+      "divertente",
+      "forte",
+      "interessante",
+      "colorato"
+    ];
+
+    function elementoCasuale(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function generaFraseCasuale() {
+      const soggetto = elementoCasuale(soggetti);
+      const verbo = elementoCasuale(verbi);
+      const complementoOggetto = elementoCasuale(complementiOggetto);
+      const aggettivo = elementoCasuale(aggettivi);
+
+      let frase = soggetto + " " + verbo;
+      if (Math.random() > 0.5) {
+        frase += " " + complementoOggetto;
+      }
+      if (Math.random() > 0.5) {
+        frase += " " + aggettivo;
+      }
+      frase += ".";
+      
+      return frase;
+    }
+
+    document.getElementById("generaFrase").addEventListener("click", function() {
+      document.getElementById("frase").innerText = generaFraseCasuale();
+    });
+  </script>
+</body>
+</html>
