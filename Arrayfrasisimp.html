@@ -12,13 +12,20 @@
     <div class="card mb-3">
       <div class="card-body" id="frase"></div>
     </div>
-    <button id="generaFrase" class="btn btn-primary" >Genera Frase Casuale</button>
+    <div class="d-flex justify-content-between">
+      <button id="generaFrase" class="btn btn-primary">Genera Frase Casuale</button>
+      <button id="mostraTutte" class="btn btn-success">Mostra Tutte le Combinazioni</button>
+    </div>
+    <div class="mt-3" id="tutteCombinazioni"></div>
   </div>
   <style>
     body {
         background: url('gattino.webp') no-repeat center center fixed;
         background-size: cover;
-        
+    }
+
+    #tutteCombinazioni h2, #tutteCombinazioni ul {
+      color: white;
     }
   </style>
 
@@ -99,6 +106,24 @@
 
     document.getElementById("generaFrase").addEventListener("click", function() {
       document.getElementById("frase").innerText = generaFraseCasuale();
+    });
+
+    document.getElementById("mostraTutte").addEventListener("click", function() {
+      const tutteCombinazioni = document.getElementById("tutteCombinazioni");
+      tutteCombinazioni.innerHTML = "<h2>Tutte le combinazioni possibili:</h2><ul></ul>";
+      const listaCombinazioni = tutteCombinazioni.querySelector("ul");
+      for (let soggetto of soggetti) {
+        for (let verbo of verbi) {
+          for (let complemento of complementiOggetto) {
+            for (let aggettivo of aggettivi) {
+              let frase = soggetto + " " + verbo + " " + complemento + " " + aggettivo + ".";
+              let listItem = document.createElement("li");
+              listItem.textContent = frase;
+              listaCombinazioni.appendChild(listItem);
+            }
+          }
+        }
+      }
     });
   </script>
 </body>
