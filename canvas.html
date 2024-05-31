@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas con Punti</title>
+    <style>
+        /* Aggiunge un bordo ai canvas per migliorarne la visibilità */
+        canvas {
+            border: 1px solid black;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sezione per il primo canvas: 100 punti consecutivi (10 per riga) -->
+    <h2>1. Canvas con 100 punti consecutivi (10 per riga)</h2>
+    <canvas id="canvas100" width="300" height="300"></canvas>
+    
+    <!-- Sezione per il secondo canvas: 1000 punti, rossi se associati a numeri primi -->
+    <h2>2. Canvas con 1000 punti neri e rossi (rossi se associati a numeri primi)</h2>
+    <canvas id="canvas1000" width="600" height="600"></canvas>
+    
+    <!-- Sezione per il terzo canvas: 10000 punti, solo numeri primi sono visualizzati in nero -->
+    <h2>3. Canvas con 10000 punti di numeri primi (neri) e numeri non primi (non stampati)</h2>
+    <canvas id="canvas10000" width="800" height="800"></canvas>
+    
+    <!-- Sezione per il quarto canvas: n numeri primi disposti a spirale (spirale di Ulam) -->
+    <h2>4. Canvas con n numeri primi disposti a spirale (spirale di Ulam)</h2>
+    <canvas id="canvasUlam" width="800" height="800"></canvas>
+
+    <script>
+        // Funzione che verifica se un numero è primo
+        function isPrime(num) {
+            if (num < 2) return false;
+            for (let i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i === 0) return false;
+            }
+            return true;
+        }
+
+        // 1. Canvas con 100 punti consecutivi (10 per riga)
+        (function() {
+            const canvas = document.getElementById('canvas100');
+            const ctx = canvas.getContext('2d');
+            const numPerRiga = 10;  // Numero di punti per riga
+            const numPunti = 100;  // Numero totale di punti
+            const puntoSize = 5;  // Dimensione dei punti
+            const padding = 25;  // Spazio tra i punti
+
+            for (let i = 0; i < numPunti; i++) {
+                const x = (i % numPerRiga) * padding + padding;  // Calcola la posizione x
+                const y = Math.floor(i / numPerRiga) * padding + padding;  // Calcola la posizione y
+                ctx.beginPath();
+                ctx.arc(x, y, puntoSize, 0, Math.PI * 2);  // Disegna il punto
+                ctx.fill();
+            }
+        })();
+
+        // 2. Canvas con 1000 punti neri e rossi (rossi se associati a numeri primi)
+        (function() {
+            const canvas = document.getElementById('canvas1000');
+            const ctx = canvas.getContext('2d');
+            const numPerRiga = 25;  // Numero di punti per riga
+            const numPunti = 1000;  // Numero totale di punti
+            const puntoSize = 3;  // Dimensione dei punti
+            const padding = 20;  // Spazio tra i punti
+
+            for (let i = 0; i < numPunti; i++) {
+                const x = (i % numPerRiga) * padding + padding;  // Calcola la posizione x
+                const y = Math.floor(i / numPerRiga) * padding + padding;  // Calcola la posizione y
+                ctx.beginPath();
+                ctx.arc(x, y, puntoSize, 0, Math.PI * 2);  // Disegna il punto
+                ctx.fillStyle = isPrime(i) ? 'red' : 'black';  // Colore rosso se il numero è primo, altrimenti nero
+                ctx.fill();
+            }
+        })();
+
+        // 3. Canvas con 10000 punti di numeri primi (neri) e numeri non primi (non stampati)
+        (function() {
+            const canvas = document.getElementById('canvas10000');
+            const ctx = canvas.getContext('2d');
+            const numPerRiga = 100;  // Numero di punti per riga
+            const numPunti = 10000;  // Numero totale di punti
+            const puntoSize = 3;  // Dimensione dei punti
+            const padding = 8;  // Spazio tra i punti
+
+            for (let i = 0; i < numPunti; i++) {
+                if (isPrime(i)) {  // Solo i numeri primi sono disegnati
+                    const x = (i % numPerRiga) * padding + padding;  // Calcola la posizione x
+                    const y = Math.floor(i / numPerRiga) * padding + padding;  // Calcola la posizione y
+                    ctx.beginPath();
+                    ctx.arc(x, y, puntoSize, 0, Math.PI * 2);  // Disegna il punto
+                    ctx.fillStyle = 'black';  // Colore nero per i numeri primi
+                    ctx.fill();
+                }
+            }
+        })();
+
+        // 4. Canvas con n numeri primi disposti a spirale (spirale di Ulam)
+        (function() {
+            function drawUlamSpiral(canvas, n) {
+                const ctx = canvas.getContext('2d');
+                const width = canvas.width;
+                const height = canvas.height;
+                const centerX = Math.floor(width / 2);  // Centro del canvas in x
+                const centerY = Math.floor(height / 2);  // Centro del canvas in y
+                const pointSize = 3;  // Dimensione dei punti
+                let x = 0, y = 0;  // Coordinate iniziali
+                let dx = 0, dy = -1;  // Direzioni di movimento iniziali
+                let segmentLength = 1;  // Lunghezza del segmento corrente
+                let segmentPassed = 0;  // Segmenti passati
+
+                ctx.fillStyle = 'black';  // Colore dei punti
+
+                for (let i = 1; i <= n; i++) {
+                    if (isPrime(i)) {  // Solo i numeri primi sono disegnati
+                        ctx.beginPath();
+                        ctx.arc(centerX + x * 10, centerY + y * 10, pointSize, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    
+                    if (++segmentPassed === segmentLength) {  // Cambia direzione
+                        segmentPassed = 0;
+                        const temp = dx;
+                        dx = -dy;
+                        dy = temp;
+                        if (dy === 0) segmentLength++;  // Incrementa la lunghezza del segmento dopo due cambi di direzione
+                    }
+                    
+                    x += dx;  // Aggiorna la posizione x
+                    y += dy;  // Aggiorna la posizione y
+                }
+            }
+
+            const canvas = document.getElementById('canvasUlam');
+            drawUlamSpiral(canvas, 10000);  // Disegna una spirale di Ulam con 10000 punti
+        })();
+    </script>
+</body>
+</html>
