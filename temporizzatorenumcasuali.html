@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gioco di Estrazione Numeri Casuali</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            border: 2px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .number-selection, .result, .score {
+            margin: 20px 0;
+        }
+        .button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Gioco di Estrazione Numeri Casuali</h1>
+    <div class="number-selection">
+        <label for="user-number">Scegli un numero tra 0 e 10:</label>
+        <input type="number" id="user-number" min="0" max="10">
+    </div>
+    <button class="button" onclick="startGame()">Inizia il Gioco</button>
+    
+    <div class="countdown"></div>
+    <div class="result"></div>
+    <div class="score">Punteggio: <span id="score">0</span></div>
+</div>
+
+<script>
+    let countdownElement = document.querySelector('.countdown');
+    let resultElement = document.querySelector('.result');
+    let scoreElement = document.getElementById('score');
+    let score = 0;
+    let interval;
+
+    // Funzione per avviare il gioco
+    function startGame() {
+        const userNumber = parseInt(document.getElementById('user-number').value);
+        if (isNaN(userNumber) || userNumber < 0 || userNumber > 10) {
+            alert('Per favore, scegli un numero valido tra 0 e 10.');
+            return;
+        }
+
+        countdownElement.innerHTML = 'Inizio tra 3...';
+        let countdown = 3;
+
+        // Countdown iniziale
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            if (countdown === 0) {
+                clearInterval(countdownInterval);
+                countdownElement.innerHTML = 'Inizia!';
+                startExtractions(userNumber);
+            } else {
+                countdownElement.innerHTML = `Inizio tra ${countdown}...`;
+            }
+        }, 1000);
+    }
+
+    // Funzione che avvia le estrazioni ogni 5 secondi
+    function startExtractions(userNumber) {
+        interval = setInterval(() => {
+            // Genera 10 numeri casuali tra 0 e 10
+            const randomNumbers = Array.from({ length: 10 }, () => Math.floor(Math.random() * 11));
+            resultElement.innerHTML = `Numeri estratti: ${randomNumbers.join(', ')}`;
+
+            // Controlla se il numero scelto dall'utente non è nell'elenco
+            if (!randomNumbers.includes(userNumber)) {
+                score++;
+                scoreElement.innerText = score;
+                resultElement.innerHTML += ` <strong>Hai indovinato! Il numero ${userNumber} non è uscito.</strong>`;
+            } else {
+                resultElement.innerHTML += ` <strong>Il numero ${userNumber} è uscito.</strong>`;
+            }
+        }, 5000);
+    }
+
+    // Funzione per fermare le estrazioni (opzionale)
+    function stopExtractions() {
+        clearInterval(interval);
+    }
+</script>
+
+</body>
+</html>
